@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="Calcium_Project_Code.vcxproj" />
+  <Project Path="Calcium_Project_Code.vcxproj" Id="c0d37c4e-77e4-42d5-b70d-fe2614f8b55b" />
 </Solution>
