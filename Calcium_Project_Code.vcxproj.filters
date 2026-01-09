@@ -99,6 +99,9 @@
     <ClInclude Include="oclt_code\Code\launchscreen.h">
       <Filter>源文件</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="oclt_code\make.sh">
@@ -114,5 +117,15 @@
     <Text Include="oclt_code\Code\recyc.txt">
       <Filter>源文件</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Calcium_Project_Code.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="newlogo.ico">
+      <Filter>资源文件</Filter>
+    </Image>
   </ItemGroup>
 </Project>

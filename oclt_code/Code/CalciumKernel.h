@@ -1,6 +1,6 @@
 ﻿//Calcium Kernel Base2
 
-//Copyright FoxaXu 2024
+//Copyright FoxaXu 2026
 // Based on OpenCppLangTab
 
 #include"../shload.h"

@@ -164,6 +164,7 @@
     <ClInclude Include="oclt_code\SourceHeader\_sh_runcore.h" />
     <ClInclude Include="oclt_code\SourceHeader\_sh_switch.h" />
     <ClInclude Include="oclt_code\SourceHeader\_sh_time.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="oclt_code\launch.cpp" />
@@ -173,6 +174,12 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="oclt_code\Code\recyc.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Calcium_Project_Code.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="newlogo.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

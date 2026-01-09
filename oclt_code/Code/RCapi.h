@@ -9,7 +9,7 @@
 #include<thread>
 
 
-int CL_FMV_ID = 2609; // Calcium Lang Format Version
+int CL_FMV_ID = 3001; // Calcium Lang Format Version
 //_$req_cl_fmv <Version>
 
 /// <VERSION>
@@ -43,13 +43,13 @@ std::string _kv_text_deluxe = "Deluxe";
 //RunIDs
 std::string _CK_Runid = _get_random_s(100000, 999999);
 
-std::string _KV_softwareVersion = "117"; //(Software Version)
+std::string _KV_softwareVersion = "120"; //(Software Version)
 
-std::string _KV_gen = "6";//(General)
+std::string _KV_gen = "1";//(General)
 
 std::string _KV_rv = "1";//(Release Version)
 
-std::string _KV_releaseVer = _KV_rV_Stable;//(Debug/Preview/preRelease/demo/Release  1 - 4)
+std::string _KV_releaseVer = _KV_rV_Release;//(Debug/Preview/preRelease/demo/Release  1 - 4)
 
 std::string _mk = ".";
 
@@ -72,9 +72,9 @@ const int _hex_cr = 00001101; // HEX 0D
 const int _hex_nl = 00001010; // HEX 0A
 
 //Build / Release / Prerelease   -  Release ID 
-const std::string _RCapi_Version = "REV_DISUSE";
+const std::string _RCapi_Version = "0";
 std::string buildshell = "/calcium_settings.cfg";
-std::string _shellTitle = "Calcium Kernel  " + _KernelVersion + "   Shell Console>";
+std::string _shellTitle = "Calcium " + _KernelVersion + " Command Line>";
 
 bool _isAdminOK_ = false;
 
@@ -202,7 +202,7 @@ bool _RcApiLoadConfig() {
 		_soildwrite_write("$UseDirectRead=false;");
 		_soildwrite_write("$TrustedServerCheck=true;");
 		_soildwrite_write("$OffLangCheck=false;");
-		_soildwrite_write("$MaxScriptExecuteLine=32768;");
+		_soildwrite_write("$MaxScriptExecuteLine=2147483640;");
 		_soildwrite_write("$AfterExecuteSleepTime=0;");
 		_soildwrite_write("$VarSpaceRandomError=0;");
 		_soildwrite_write("");
