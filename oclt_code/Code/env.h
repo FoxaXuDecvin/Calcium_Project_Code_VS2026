@@ -66,6 +66,8 @@ std::string nt_sipcfg_open;
 bool _setnextargs_loadenv;
 bool _FastMode;
 
+bool _CommandTracker;
+
 std::string Reg_Proces_runid = "NoNameProcess";
 
 std::string Reg_Process_Map;

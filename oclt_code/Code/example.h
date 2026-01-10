@@ -112,6 +112,10 @@ void argsApi(std::string args$api) {
 		_skipcheck_language = true;
 	}
 
+	if (args$api == "-enable-cmdtrack") {
+		_CommandTracker = true;
+	}
+
 	if (args$api == "-loadenv") {
 		_setnextargs_loadenv = true;
 		return;

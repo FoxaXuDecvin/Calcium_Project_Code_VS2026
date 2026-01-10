@@ -386,6 +386,9 @@ int __CreateNewThreads(std::string Script,std::string args,std::string originEnv
 }
 
 std::string _runcode_api(std::string command) {
+	if (_CommandTracker) {
+		_fileapi_write("CommandTracker.txt", command);
+	}
 	CommandSpeed_CountNum++;
 	//std::cout << "Origin Execute Command :   " << command << std::endl;
 	sleepapi_ms(_exec_runtimesleep);
