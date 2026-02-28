@@ -47,7 +47,7 @@ std::string _KV_softwareVersion = "120"; //(Software Version)
 
 std::string _KV_gen = "1";//(General)
 
-std::string _KV_rv = "1";//(Release Version)
+std::string _KV_rv = "2";//(Release Version)
 
 std::string _KV_releaseVer = _KV_rV_Release;//(Debug/Preview/preRelease/demo/Release  1 - 4)
 
@@ -958,6 +958,9 @@ int CommandSpeed_CountNum = 0;
 int LastCache_TPC = 0;
 int TotalCommandExec_TPC = 0;
 
+int VarSpacePT_IO = 0;
+int Last_VarSpacePT_IO = 0;
+
 int LastCache_TPD = 0;
 int TotalCE_TPD = 0;
 
@@ -999,8 +1002,12 @@ int Thread_PerfCurrentGet() {
 
 		LastCache_TPD = LRBuffer_Count;
 		LRBuffer_Count = 0;
+
 		TotalCE_TPD = TotalCE_TPD + LastCache_TPD;
 		if (MAX_TPD < LastCache_TPD)MAX_TPD = LastCache_TPD;
+
+		Last_VarSpacePT_IO = VarSpacePT_IO;
+		VarSpacePT_IO = 0;
 
 		PerfCNT_File = _$GetSelfPath + "/api_cpspeed_id " + PerfCNT_ID + ".txt";
 
@@ -1011,6 +1018,9 @@ int Thread_PerfCurrentGet() {
 		_fileapi_write(PerfCNT_File, " ");
 		_fileapi_write(PerfCNT_File, "Disk IO :   " + std::to_string(LastCache_TPD) + " / Every second     MaxSpeed:  " + std::to_string(MAX_TPD));
 		_fileapi_write(PerfCNT_File, "Total Disk CR :    " + std::to_string(TotalCE_TPD));
+		_fileapi_write(PerfCNT_File, " ");
+		_fileapi_write(PerfCNT_File, "Var Space IO :   Total (Include add/modify/remove) : " + std::to_string(Last_VarSpacePT_IO));
+		_fileapi_write(PerfCNT_File, "Var Space Total Size :    " + std::to_string(VarSpaceMax));
 		_fileapi_write(PerfCNT_File, " ");
 		_fileapi_write(PerfCNT_File, "Processing address.  File :  " + _global_scriptload + " Line :  " + std::to_string(_gf_line) + "  breakpoint :  " + std::to_string(_gf_cg));
 		if (ProcessReqStop == true) break;

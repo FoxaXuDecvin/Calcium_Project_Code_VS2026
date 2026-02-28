@@ -489,6 +489,7 @@ std::string _runcode_api(std::string command) {
 		return "ok";
 	}
 	if (SizeRead(command, 5) == "_var ") {
+		VarSpacePT_IO++;
 		std::string _rc_varbind;
 		if (checkChar(command, "=")) {
 			//Detecd illegal char = 
@@ -527,11 +528,13 @@ std::string _runcode_api(std::string command) {
 		return "ok";
 	}
 	if (SizeRead(command, 10) == "_var_reset") {
+		VarSpacePT_IO++;
 		VarSpace = "varspace;";
 		VarSpaceMax = 0;
 		return "ok";
 	}
 	if (SizeRead(command, 6) == "_free ") {
+		VarSpacePT_IO++;
 		_rc_varid = HeadSpaceCleanA(PartReadA(oldcmd, " ", "$FROMEND$", 1));
 		_varspacedelete(_rc_varid);
 
