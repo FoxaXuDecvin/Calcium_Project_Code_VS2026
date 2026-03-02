@@ -68,6 +68,8 @@ bool _FastMode;
 
 bool _CommandTracker;
 
+bool _VarSpaceMFTracker;
+
 std::string Reg_Proces_runid = "NoNameProcess";
 
 std::string Reg_Process_Map;

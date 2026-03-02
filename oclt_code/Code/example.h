@@ -114,6 +114,12 @@ void argsApi(std::string args$api) {
 
 	if (args$api == "-enable-cmdtrack") {
 		_CommandTracker = true;
+		_fileapi_createmark("CommandTracker.txt", "Tracker Report File");
+	}
+
+	if (args$api == "-varspace-modifytrack") {
+		_VarSpaceMFTracker = true;
+		_fileapi_createmark("VarSpace_ModifyTracker.txt", "Tracker Report File");
 	}
 
 	if (args$api == "-loadenv") {

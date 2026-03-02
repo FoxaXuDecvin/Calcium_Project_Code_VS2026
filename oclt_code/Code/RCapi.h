@@ -9,7 +9,7 @@
 #include<thread>
 
 
-int CL_FMV_ID = 3004; // Calcium Lang Format Version
+int CL_FMV_ID = 3006; // Calcium Lang Format Version
 //_$req_cl_fmv <Version>
 
 /// <VERSION>
@@ -47,7 +47,7 @@ std::string _KV_softwareVersion = "120"; //(Software Version)
 
 std::string _KV_gen = "1";//(General)
 
-std::string _KV_rv = "3";//(Release Version)
+std::string _KV_rv = "6";//(Release Version)
 
 std::string _KV_releaseVer = _KV_rV_Release;//(Debug/Preview/preRelease/demo/Release  1 - 4)
 
@@ -1020,7 +1020,7 @@ int Thread_PerfCurrentGet() {
 		_fileapi_write(PerfCNT_File, "Total Disk CR :    " + std::to_string(TotalCE_TPD));
 		_fileapi_write(PerfCNT_File, " ");
 		_fileapi_write(PerfCNT_File, "Var Space IO :   Total (Include add/modify/remove) : " + std::to_string(Last_VarSpacePT_IO));
-		_fileapi_write(PerfCNT_File, "Var Space Total Size :    " + std::to_string(VarSpaceMax));
+		_fileapi_write(PerfCNT_File, "Var Space Total  :    " + std::to_string(VarSpaceMax) +   "       Memory Usage :   " + std::to_string(VarSpace.size()) + " Byte");
 		_fileapi_write(PerfCNT_File, " ");
 		_fileapi_write(PerfCNT_File, "Processing address.  File :  " + _global_scriptload + " Line :  " + std::to_string(_gf_line) + "  breakpoint :  " + std::to_string(_gf_cg));
 		if (ProcessReqStop == true) break;
