@@ -524,10 +524,11 @@ std::string _runcode_api(std::string command) {
 			_rc_varinfo[ModifyCount] = '?';
 		}
 		//_p("Report ENV  " + std::to_string(ModifyCount) + " VRB:  " + std::to_string(VarSpaceRandomError) + "  AllBreak Num  " + std::to_string(intCutA) + "   B " + std::to_string(intCutB) + "   C " + std::to_string(intCutC));
-		_varspaceadd(_rc_varbind, _rc_varinfo);
 		if (_VarSpaceMFTracker == true) {
 			_fileapi_write("VarSpace_ModifyTracker.txt", "VarSpace Modify .    @Env :   \"" + _rc_varbind + "\"    @New Value :  \"" + _rc_varinfo + "\"    @Old Value :   \"" + _Old_VSAPI_TransVar(_rc_varbind) + "\"");
 		}
+		_varspaceadd(_rc_varbind, _rc_varinfo);
+		
 
 		return "ok";
 	}

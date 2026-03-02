@@ -45,9 +45,9 @@ std::string _CK_Runid = _get_random_s(100000, 999999);
 
 std::string _KV_softwareVersion = "120"; //(Software Version)
 
-std::string _KV_gen = "1";//(General)
+std::string _KV_gen = "2";//(General)
 
-std::string _KV_rv = "6";//(Release Version)
+std::string _KV_rv = "1";//(Release Version)
 
 std::string _KV_releaseVer = _KV_rV_Release;//(Debug/Preview/preRelease/demo/Release  1 - 4)
 
