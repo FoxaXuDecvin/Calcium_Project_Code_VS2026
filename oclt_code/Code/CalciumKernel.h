@@ -720,7 +720,12 @@ std::string _runcode_api(std::string command) {
 			else {
 				_pv("_$lang.act_succ_t1");
 				_pv("_$lang.act_succ.t2");
-				_write_sipcfg(buildshell, "ExecuteFile", _$GetSelfFull);
+				if (!_BlockNotAllowEditConfig) {
+					_write_sipcfg(buildshell, "ExecuteFile", _$GetSelfFull);
+				}
+				else {
+					_p("Remove Parameter -noeditconfig to activate");
+				}
 				_rc_exec_address = _Old_VSAPI_TransVar(_load_sipcfg(buildshell, "ExecuteFile"));
 			}
 			return "ok";

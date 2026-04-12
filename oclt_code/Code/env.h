@@ -14,7 +14,7 @@ bool _setnextargs_addo = false;
 bool _setproces_runid = false;
 bool _setproces_perfid = false;
 bool _debugMode = false;
-
+bool _setproces_path = false;
 
 //RUNMODE STRING
 

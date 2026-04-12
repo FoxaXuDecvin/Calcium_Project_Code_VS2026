@@ -108,11 +108,14 @@ void argsApi(std::string args$api) {
 		_direct_read_script = true;
 	}
 
-	
+	if (args$api == "-noeditconfig") {
+		_BlockNotAllowEditConfig = true;
+	}
 
-		if (args$api == "-noeditconfig") {
-			_BlockNotAllowEditConfig = true;
-		}
+	if (args$api == "-path") {
+		_setproces_path = true;
+		return;
+	}
 
 	if (args$api == "-nolang") {
 		_skipcheck_language = true;
@@ -211,6 +214,11 @@ void argsApi(std::string args$api) {
 		monitor_pfr.detach();
 
 		_setproces_perfid = false;
+	}
+
+	if (_setproces_path == true) {
+		UserSetPATH = args$api;
+		_setproces_path = false;
 	}
 
 
@@ -556,7 +564,12 @@ int _ThreadManager_HeadMainLoad() {
 	
 	Reg_Process_Map = _OriginWorkDir + "/session_map.txt";
 	_$GetSelfPath = _OriginWorkDir;
-	_varspaceadd("{path}", _OriginWorkDir);
+	if (_OriginWorkDir == "voidcheck") {
+
+	}
+	else {
+		_varspaceadd("{path}", _OriginWorkDir);
+	}
 
 	if (!check_file_existence(Reg_Process_Map)) {
 		_fileapi_write(Reg_Process_Map, "//  Calcium Dialogue Register");

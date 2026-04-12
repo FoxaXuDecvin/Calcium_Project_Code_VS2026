@@ -9,7 +9,7 @@
 #include<thread>
 
 
-int CL_FMV_ID = 3012; // Calcium Lang Format Version
+int CL_FMV_ID = 3019; // Calcium Lang Format Version
 //_$req_cl_fmv <Version>
 
 /// <VERSION>
@@ -47,7 +47,7 @@ std::string _KV_softwareVersion = "120"; //(Software Version)
 
 std::string _KV_gen = "2";//(General)
 
-std::string _KV_rv = "1";//(Release Version)
+std::string _KV_rv = "2";//(Release Version)
 
 std::string _KV_releaseVer = _KV_rV_Release;//(Debug/Preview/preRelease/demo/Release  1 - 4)
 
@@ -127,8 +127,19 @@ void _pv(std::string info) {
 	return;
 }
 
+
+std::string UserSetPATH = "nodata";
 void _RcApi_vp_load(void) {
-	_varspaceadd("{path}", _$GetSelfPath);
+	
+	if (UserSetPATH == "nodata") {
+		_varspaceadd("{path}", _$GetSelfPath);
+		//_p("PATH USE DEFAULT");
+	}
+	else {
+		_varspaceadd("{path}", UserSetPATH);
+		//_p("PATH USE USER SET");
+	}
+	//_pause();
 	_varspaceadd("{VersionID}", _KernelVersion);
 }
 
@@ -676,7 +687,9 @@ bool _activate_calcium(std::string Key_Register) {
 	if (_KV_relver$int > 4) {
 		//No Verify
 		if (_rc_exec_address != _$GetSelfFull) {
-			_write_sipcfg(buildshell, "ExecuteFile", _$GetSelfFull);
+			if (!_BlockNotAllowEditConfig) {
+				_write_sipcfg(buildshell, "ExecuteFile", _$GetSelfFull);
+			}
 			_rc_exec_address = _Old_VSAPI_TransVar(_load_sipcfg(buildshell, "ExecuteFile"));
 		}
 		return true;
