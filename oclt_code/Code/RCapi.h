@@ -9,7 +9,7 @@
 #include<thread>
 
 
-int CL_FMV_ID = 3006; // Calcium Lang Format Version
+int CL_FMV_ID = 3012; // Calcium Lang Format Version
 //_$req_cl_fmv <Version>
 
 /// <VERSION>
@@ -95,6 +95,8 @@ bool _rcset_enforceUTF8;
 bool _rcset_aosr;
 
 bool _rcset_useAdmin;
+
+bool _BlockNotAllowEditConfig = false;
 
 
 
@@ -236,8 +238,10 @@ bool _RcApiLoadConfig() {
 		_soildwrite_write("$Configuration File Integrity Check=vaild;");
 		_soildwrite_close();
 	}
-	_write_sipcfg(file, "CalciumVersion", _KernelVersion);
-	
+	if (!_BlockNotAllowEditConfig) {
+		_write_sipcfg(file, "CalciumVersion", _KernelVersion);
+	}
+
 	//Check Integrity
 
 	if (_load_sipcfg(file, "Configuration File Integrity Check") != "vaild") {

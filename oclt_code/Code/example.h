@@ -108,6 +108,12 @@ void argsApi(std::string args$api) {
 		_direct_read_script = true;
 	}
 
+	
+
+		if (args$api == "-noeditconfig") {
+			_BlockNotAllowEditConfig = true;
+		}
+
 	if (args$api == "-nolang") {
 		_skipcheck_language = true;
 	}

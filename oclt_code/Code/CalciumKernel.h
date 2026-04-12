@@ -383,7 +383,7 @@ std::string _RunSuperMaker,_WorkDIRECTORY_FOLDER;
 std::string Net_script_nameid;
 int __CreateNewThreads(std::string Script,std::string args,std::string originEnv,std::string proces_runid) {
 	std::string CurrentRSM = _RunSuperMaker;
-	procesid_ccode = _system_autoRun_A(CurrentRSM, "-run \"" + Script + "\" -args \"" + args + "\" -loadenv \"" + originEnv + "\" -runid \"" + proces_runid + "\" -fastmode",true);
+	procesid_ccode = _system_autoRun_A(CurrentRSM, "-run \"" + Script + "\" -args \"" + args + "\" -loadenv \"" + originEnv + "\" -runid \"" + proces_runid + "\" -fastmode -noeditconfig",true);
 	_fileapi_del (CurrentRSM);
 	return procesid_ccode;
 }
@@ -641,7 +641,13 @@ std::string _runcode_api(std::string command) {
 
 			_rc_varinfo = ReplaceChar(_rc_varinfo, ";", "");
 
-			_write_sipcfg(buildshell, _rc_varid, _rc_varinfo);
+			if (_BlockNotAllowEditConfig) {
+				_p("Failed! You cannot access config file. because this app has -noeditconfig parameter");
+			}
+			else
+			{
+				_write_sipcfg(buildshell, _rc_varid, _rc_varinfo);
+			}
 			_pv("_$lang.cfgedit.r");
 			return "ok";
 		}
