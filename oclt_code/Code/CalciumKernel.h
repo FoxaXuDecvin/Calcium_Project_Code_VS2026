@@ -225,15 +225,7 @@ bool _stop_exec_script = false;
 std::string _ckapi_scriptload(std::string load_Script,std::string Sargs) {
 	//_p("Load Main Kernel");
 	std::ifstream _SessionLock;
-	_SessionLock.open(load_Script);
-	if (!_language_mode) {
-		if (!_kernel_activate) {
-			_pv("_$lang.notactivate");
-			_pv("_$lang.activatehelp");
-			_pv("ScriptAPI _$lang.Access_Denied : ");
-			return "ok";
-		}
-	}
+	if(_rcset_LockRunningScript)_SessionLock.open(load_Script);
 	//_p("Speed check point 1");
 	_global_scriptload = load_Script;
 	script_args = Sargs;
@@ -703,51 +695,6 @@ std::string _runcode_api(std::string command) {
 		return "ok";
 	}
 
-	//Verify PRODUCT
-	kernelSecureVid = "3.41";
-	if (SizeRead(command, 10) == "_$activate") {
-		if (_kernel_activate == false) {
-			if (command == "_$activate") {
-				_prts("Write your activation code here >");
-				charCutA = _getline_type();
-			}
-			else {
-				charCutA = PartReadA(oldcmd, "(", ")", 1);
-			}
-			if (!_activate_request(charCutA)) {
-				_pv("_$lang.act_fail");
-			}
-			else {
-				_pv("_$lang.act_succ_t1");
-				_pv("_$lang.act_succ.t2");
-				if (!_BlockNotAllowEditConfig) {
-					_write_sipcfg(buildshell, "ExecuteFile", _$GetSelfFull);
-				}
-				else {
-					_p("Remove Parameter -noeditconfig to activate");
-				}
-				_rc_exec_address = _Old_VSAPI_TransVar(_load_sipcfg(buildshell, "ExecuteFile"));
-			}
-			return "ok";
-		}
-	}
-	if (!_language_mode) {
-		if (!_kernel_activate) {
-			_pv("_$lang.notactivate");
-			_pv("_$lang.activatehelp");
-			_pv("_$lang.act_need : " + command);
-			return "ok";
-		}
-		if (_rc_exec_address != _$GetSelfFull) {
-			if (_rc_exec_address != "voidcheck") {
-				_pv("_$lang.activateModified");
-				_pv("_$lang.activateRe");
-				_kernel_activate = false;
-				return "ok";
-			}
-		}
-	}
-
 	//Open Command
 	//oldcmd = command;
 
@@ -1159,7 +1106,7 @@ std::string _runcode_api(std::string command) {
 
 		_write_sipcfg(Reg_Process_Map, charCutA, "killed");
 
-		return "status Error : Report this bugs";
+		return "Succeed Killed";
 	}
 	if (SizeRead(command, 13) == "_set_pagefile") {
 		charCutA = PartReadA(oldcmd, " ", PartRead_FMend, 1);

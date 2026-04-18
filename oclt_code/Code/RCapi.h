@@ -9,7 +9,7 @@
 #include<thread>
 
 
-int CL_FMV_ID = 3019; // Calcium Lang Format Version
+int CL_FMV_ID = 3021; // Calcium Lang Format Version
 //_$req_cl_fmv <Version>
 
 /// <VERSION>
@@ -43,11 +43,11 @@ std::string _kv_text_deluxe = "Deluxe";
 //RunIDs
 std::string _CK_Runid = _get_random_s(100000, 999999);
 
-std::string _KV_softwareVersion = "120"; //(Software Version)
+std::string _KV_softwareVersion = "121"; //(Software Version)
 
-std::string _KV_gen = "2";//(General)
+std::string _KV_gen = "1";//(General)
 
-std::string _KV_rv = "2";//(Release Version)
+std::string _KV_rv = "1";//(Release Version)
 
 std::string _KV_releaseVer = _KV_rV_Release;//(Debug/Preview/preRelease/demo/Release  1 - 4)
 
@@ -96,6 +96,8 @@ bool _rcset_aosr;
 
 bool _rcset_useAdmin;
 
+bool _rcset_LockRunningScript;
+
 bool _BlockNotAllowEditConfig = false;
 
 
@@ -108,7 +110,6 @@ std::string _rcbind_langpath;
 std::string _rcset_lang;
 std::string _rcset_seclang;
 std::string _rcbind_serverapi;
-std::string _rc_activate_key;
 std::string _rc_exec_address;
 std::string _pagefile_savedir;
 std::string _OriginWorkDir;
@@ -204,9 +205,9 @@ bool _RcApiLoadConfig() {
 		_dapi_create_full_path(file);
 		_soildwrite_open(file);
 		_soildwrite_write(" //BuildShell SipCfg  --Use  true/false");
-		_soildwrite_write("$CalciumVersion={null};");
+		_soildwrite_write("$CalciumVersion=" + _KernelVersion + ";");
 		_soildwrite_write("$EnableSystemCommand=false;");
-		_soildwrite_write("$EnableAntiCrash=true;");
+		_soildwrite_write("$EnableAntiCrash=false;");
 		_soildwrite_write("$EnableCrashReload=true;");
 		_soildwrite_write("$AllowDirectoryEdit=false;");
 		_soildwrite_write("$AllowThirdPartyPlugin=false;");
@@ -218,6 +219,7 @@ bool _RcApiLoadConfig() {
 		_soildwrite_write("$MaxScriptExecuteLine=2147483640;");
 		_soildwrite_write("$AfterExecuteSleepTime=0;");
 		_soildwrite_write("$VarSpaceRandomError=0;");
+		_soildwrite_write("$LockingRunningScript=true;");
 		_soildwrite_write("");
 		_soildwrite_write("//ShellSettings");
 		_soildwrite_write("$AutoOpenShellAfterRun=true;");
@@ -243,14 +245,10 @@ bool _RcApiLoadConfig() {
 		_soildwrite_write("");
 		_soildwrite_write("//Server");
 		_soildwrite_write("$RootAPIServer=http://githubimage.foxaxu.top;");
-		_soildwrite_write("$Kernelactivate={Nokey};");
 		_soildwrite_write("$ExecuteFile=" + _$GetSelfFull + ";");
 		_soildwrite_write("");
 		_soildwrite_write("$Configuration File Integrity Check=vaild;");
 		_soildwrite_close();
-	}
-	if (!_BlockNotAllowEditConfig) {
-		_write_sipcfg(file, "CalciumVersion", _KernelVersion);
 	}
 
 	//Check Integrity
@@ -283,6 +281,7 @@ bool _RcApiLoadConfig() {
 	_gf_line_maxallow = atoi(_load_sipcfg_noreturn(file, "MaxScriptExecuteLine").c_str());
 	_exec_runtimesleep = atoi(_load_sipcfg_noreturn(file, "AfterExecuteSleepTime").c_str());
 	VarSpaceRandomError = atoi(_load_sipcfg_noreturn(file, "VarSpaceRandomError").c_str());
+	_rcset_LockRunningScript = _RcLoad_TransApi("LockingRunningScript");
 
 	_rcset_aosr = _RcLoad_TransApi("AutoOpenShellAfterRun");
 	_rcset_useAdmin = _RcLoad_TransApi("UseSuperUser");
@@ -302,7 +301,6 @@ bool _RcApiLoadConfig() {
 	_rcset_enforceUTF8 = _RcLoad_TransApi("EnforceUTF-8");
 
 	_rcbind_serverapi = _Old_VSAPI_TransVar(_load_sipcfg_noreturn(file, "RootAPIServer"));
-	_rc_activate_key= _Old_VSAPI_TransVar(_load_sipcfg_noreturn(file, "Kernelactivate"));
 	_rc_exec_address = _Old_VSAPI_TransVar(_load_sipcfg_noreturn(file, "ExecuteFile"));
 
 	//Create Directory
@@ -622,122 +620,18 @@ bool _TBD_WARNING;
 std::string TBD_STR;
 std::string TBD_cache;
 bool _Time_Bomb_Detect(std::string CurrentRV) {
-	TBD_STR = std::to_string(tbd_year) + "/" + std::to_string(tbd_month) + "/" + std::to_string(tbd_day);
-	TBD_cache = __GetCurrentTimeAPI(__Time_Year, false) + "/" + std::to_string(_GetCurrentTimeAPI(__Time_Month, false)) + "/" + std::to_string(_GetCurrentTimeAPI(__Time_Day, false));
-
-	_TBD_WARNING = false;
-	if (atoi(CurrentRV.c_str()) > 4) {
-		return false;
-	}
-
-	//P1
-	_p("TBD Notification  :     Current Time :  <" + TBD_cache + ">     TBD Date :   <" + TBD_STR + ">");
-	if (TBD_STR == TBD_cache) {
-		_TBD_WARNING = true;
-		return false;
-	}
-
-	//P2
-
-	if (tbd_year < _GetCurrentTimeAPI(__Time_Year, false)) {
-		_p("Year Outdate");
-		_p(" [TBD]  Out of Date");
-		return true;
-	}
-
-	if (tbd_month < _GetCurrentTimeAPI(__Time_Month, false)) {
-		_p("Month Outdate");
-		_p(" [TBD]  Out of Date");
-		return true;
-	}
-
-	if (tbd_day < _GetCurrentTimeAPI(__Time_Day, false)) {
-		_p("Day Outdate");
-		_p(" [TBD]  Out of Date");
-		return true;
-	}
-
-
-	_p(" [TBD]  Time check pass");
 	return false;
 }
 
-std::string activate_id;
+
 std::string at_cache;
 bool _TrustedServer;
 bool _activate_calcium(std::string Key_Register) {
-	if (_rcset_trustcheck == true) {
-		if (!_urldown_api_nocache("http://githubimage.foxaxu.top/TrustedServer.txt", "TrustedList.txt")) {
-			_TrustedServer = false;
-		}
-		else {
-			if (FindCharLine(1, "TrustedList.txt", _rcbind_serverapi) == -4) {
-				_TrustedServer = false;
-			}
-			else {
-				_TrustedServer = true;
-			}
-			_fileapi_del("TrustedList.txt");
-		}
-	}
-	else {
-		_TrustedServer = false;
-	}
-	
-	if (_KV_relver$int > 4) {
-		//No Verify
-		if (_rc_exec_address != _$GetSelfFull) {
-			if (!_BlockNotAllowEditConfig) {
-				_write_sipcfg(buildshell, "ExecuteFile", _$GetSelfFull);
-			}
-			_rc_exec_address = _Old_VSAPI_TransVar(_load_sipcfg(buildshell, "ExecuteFile"));
-		}
-		return true;
-	}
-	if (SizeRead(Key_Register, 10) != "USER-SIGN-") {
-		return false;
-	}
-	activate_id = PartReadA(Key_Register, "(", ")", 1);
-
-	if (_TrustedServer == false) {
-		_p("You are trying to activate Calcium using an untrusted server.");
-		_p("Please use a trusted server. you can read this list http://githubimage.foxaxu.top/TrustedServer.txt");
-		return false;
-	}
-	if (_TBD_WARNING == true) {
-		_p("ERROR :  End of evaluation period");
-		return false;
-	}
-
-	if (!_api_request_clear("activateRequest/" + activate_id, "activateSign.tmp")) {
-		_p("Your activation code is invalid");
-		return false;
-	}
-
-	at_cache = _fileapi_textread("activateSign.tmp", 1);
-	_fileapi_del("activateSign.tmp");
-
-	if (Key_Register == at_cache) {
-		return true;
-	}
-	if (at_cache == "violation") {
-		_pv("_$lang.false.violation");
-		return false;
-	}
-
-	_p("You entered an activation code that is not the current product");
-	return false;
+	return true;
 }
 
 bool _activate_request(std::string key_reg) {
-	_kernel_activate = _activate_calcium(key_reg);
-	if (_kernel_activate == true) {
-		if (key_reg != "{Nokey}") {
-			_write_sipcfg(buildshell, "Kernelactivate", key_reg);
-		}
-	}
-
-	return _kernel_activate;
+	return true;
 }
 
 void _var_typetext(std::string file) {

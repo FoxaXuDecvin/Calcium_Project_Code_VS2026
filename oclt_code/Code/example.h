@@ -232,26 +232,6 @@ bool CK_Shell_open(void) {
 	_pn();
 	_pn();
 	_p("----------------------------------------------------------");
-	if (atoi(_KV_releaseVer.c_str()) < 5) {
-		_pv("_$lang.cfgver");
-		_pv("_$lang.timebomb " + TBD_STR);
-	}
-	if (_TBD_WARNING == true) {
-		_pv("_$lang.tbd.warning ");
-	}
-	_p("Calcium Shell Console");
-	if (_kernel_activate == false) {
-		_pv("_$lang.act_info .  _use _$activate(%Key%) to Activate");
-	}
-	if (_rcset_trustcheck == true) {
-		if (_TrustedServer == false) {
-			_pv("_$lang.untrusted.server");
-		}
-	}
-	else {
-		_pv("_$lang.untrusted.server");
-	}
-	_p("----------------------------------------------------------");
 	_pv("_$lang.language :  _$lang.about .....  " + _rcset_lang);
 	_p("type command,   use \"_exit\" to exit.");
 
@@ -352,7 +332,7 @@ int _HeadMainLoad() {
 			_remove_sipcfg(Reg_Process_Map, listen_id_tm_manager);
 			return ReturnResultCode;
 		}
-		if (_load_sipcfg(Reg_Process_Map, listen_id_tm_manager) != "alive") {
+		if (_load_sipcfg(Reg_Process_Map, listen_id_tm_manager) == "killed") {
 			_remove_sipcfg(Reg_Process_Map, listen_id_tm_manager);
 			break;
 		}
@@ -519,14 +499,6 @@ int _ThreadManager_HeadMainLoad() {
 			//_p("Anti Crash Services is " + to_string(_rcset_anticrash));
 		}
 
-		if (_Time_Bomb_Detect(_KV_releaseVer)) return 661;
-		
-		if (_activate_request(_rc_activate_key) == false) {
-			_p(" [TBD]  Current product is not activated");
-		}
-		else {
-			//_p(" [TBD]  Current product activate Succeed");
-		}
 
 		if (_rcbind_autorun != "null") {
 			_runmode = _runmode_runscript;
@@ -552,10 +524,6 @@ int _ThreadManager_HeadMainLoad() {
 		}
 	}
 
-	if (_activate_request(_rc_activate_key) == false) {
-		_p("Activate Calcium");
-	}
-
 	if (Reg_Proces_runid == "NoNameProcess") {
 		Reg_Proces_runid = _get_random_s(10000000, 99999999) + "~DiaReg";
 	}
@@ -575,7 +543,6 @@ int _ThreadManager_HeadMainLoad() {
 		_fileapi_write(Reg_Process_Map, "//  Calcium Dialogue Register");
 	}
 
-	_write_sipcfg(Reg_Process_Map, Reg_Proces_runid, "alive");
 	//_p("Register on " + Reg_Process_Map + "   ID " + Reg_Proces_runid);
 	//Config at process Exit 
 	// 
@@ -588,6 +555,9 @@ int _ThreadManager_HeadMainLoad() {
  	signal(SIGABRT, regout_atexit);
 
 	//main
+
+	_write_sipcfg(Reg_Process_Map, Reg_Proces_runid, "alive"); //Delay Report Status
+
 	if (_runmode == _runmode_null) {
 		TypeHelpMenu();
 		_pause();
