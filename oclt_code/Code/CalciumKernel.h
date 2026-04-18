@@ -1079,8 +1079,14 @@ std::string _runcode_api(std::string command) {
 		//_p("Wait " + Reg_Process_Map + "  To Callback :  " + chartempC);
  		while (1) {
 			__settings_throwErrorMode = false;
+			if (!check_file_existence(Reg_Process_Map)) {
+				while (1) {
+					sleepapi_ms(100);
+					if (check_file_existence(Reg_Process_Map))break;
+				}
+			}
 			if (_load_sipcfg(Reg_Process_Map, chartempC) == "alive")break;
-			sleepapi_ms(50);
+			sleepapi_ms(100);
 		}
 
 		return "ok";
@@ -1090,6 +1096,12 @@ std::string _runcode_api(std::string command) {
 		
 		__settings_throwErrorMode = false;
 
+		if (!check_file_existence(Reg_Process_Map)) {
+			while (1) {                                      
+				sleepapi_ms(100);
+				if (check_file_existence(Reg_Process_Map))break;
+			}
+		}
 		if (_load_sipcfg(Reg_Process_Map, charCutA) == "alive") return _str_true;
 		if (_load_sipcfg(Reg_Process_Map, charCutA) != "alive") return _str_false;
 
@@ -1102,6 +1114,12 @@ std::string _runcode_api(std::string command) {
 
 		__settings_throwErrorMode = false;
 
+		if (!check_file_existence(Reg_Process_Map)) {
+			while (1) {
+				sleepapi_ms(100);
+				if (check_file_existence(Reg_Process_Map))break;
+			}
+		}
 		if (_load_sipcfg(Reg_Process_Map, charCutA) != "alive") return "No This Process"; //Check Thread Exist ?
 
 		_write_sipcfg(Reg_Process_Map, charCutA, "killed");
