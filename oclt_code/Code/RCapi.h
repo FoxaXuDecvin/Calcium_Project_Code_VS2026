@@ -9,7 +9,7 @@
 #include<thread>
 
 
-int CL_FMV_ID = 3021; // Calcium Lang Format Version
+int CL_FMV_ID = 3022; // Calcium Lang Format Version
 //_$req_cl_fmv <Version>
 
 /// <VERSION>
@@ -47,7 +47,7 @@ std::string _KV_softwareVersion = "121"; //(Software Version)
 
 std::string _KV_gen = "1";//(General)
 
-std::string _KV_rv = "1";//(Release Version)
+std::string _KV_rv = "2";//(Release Version)
 
 std::string _KV_releaseVer = _KV_rV_Release;//(Debug/Preview/preRelease/demo/Release  1 - 4)
 
@@ -946,4 +946,29 @@ int Thread_PerfCurrentGet() {
 	TPC_all_exit = true;
 
 	return 0;
+}
+
+void HelpArgsType() {
+	_p("OpenCalcium Platform Argument");
+	_p(" ");
+	_p(" Basic Argument");
+	_p("     -run  {ScriptFile}        Run Script");
+	_p("     -shell                          Open Calcium Shell");
+	_p("     -args {Argument}      Run Script with argument");
+	_p(" ");
+	_p(" Advanced Argument");
+	_p("     -noeditconfig     Reject all \"calcium_settings.cfg\" modify");
+	_p("     -nolang               Skip Load Language resources");
+	_p("     -runid {RunID}                  Run ID (Thread name)");
+	_p("     -fastmode            Use Fast Mode to Load Calcium (No Language. No Resource Load) ");
+	_p(" ");
+	_p(" Developer Argument");
+	_p("     -enable-cmdtrack                 Enable Command Tracker and write to file");
+	_p("     -varspace-modifytrack         Enable track  all environment variable modify operate");
+	_p("     -loadenv   {File}                      Load Saved Environment to Var Space");
+	_p("     -enable-vs-random-break   To Debug Error Recovery. Choose random var replace to '?'.emulate error happend.");
+	_p("     --perf-test                              Run Calcium Performance Test");
+	_p("     -perfid {ID}                             TPC Service. Track Performance Active");
+	_p("");
+	return;
 }

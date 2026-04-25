@@ -27,6 +27,7 @@ const std::string _runmode_listversion = "r4ve";
 const std::string _runmode_optimi = "r5op";
 const std::string _runmode_cstpmake = "r661";
 const std::string _runmode_cstpunpack = "r662";
+const std::string _runmode_helpargs = "r7ha";
 
 const std::string _str_true = "true";
 const std::string _str_false = "false";

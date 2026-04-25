@@ -46,6 +46,11 @@ void argsApi(std::string args$api) {
 	//Process will close after args run
 
 	//Args Switch
+	if (args$api == "-helpargs") {
+		_runmode = _runmode_helpargs;
+		return;
+	}
+
 	if (args$api == "-run") {
 		_setnextargs_runscript = true;
 		_runmode = _runmode_runscript;
@@ -569,6 +574,14 @@ int _ThreadManager_HeadMainLoad() {
 			return 0;
 		}
 	}
+
+	if (_runmode == _runmode_helpargs) {
+		HelpArgsType();
+		_pause();
+		_remove_sipcfg(Reg_Process_Map, Reg_Proces_runid);
+		return 0;
+	}
+
 	if (_runmode == _runmode_optimi) {
 		readbufferA = runscript + "_optimi.ca";
 		_p("Optimi Mode");
