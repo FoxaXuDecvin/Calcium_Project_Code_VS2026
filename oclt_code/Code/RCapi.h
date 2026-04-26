@@ -9,7 +9,7 @@
 #include<thread>
 
 
-int CL_FMV_ID = 3022; // Calcium Lang Format Version
+int CL_FMV_ID = 3041; // Calcium Lang Format Version
 //_$req_cl_fmv <Version>
 
 /// <VERSION>
@@ -47,7 +47,7 @@ std::string _KV_softwareVersion = "121"; //(Software Version)
 
 std::string _KV_gen = "1";//(General)
 
-std::string _KV_rv = "2";//(Release Version)
+std::string _KV_rv = "6";//(Release Version)
 
 std::string _KV_releaseVer = _KV_rV_Release;//(Debug/Preview/preRelease/demo/Release  1 - 4)
 
@@ -708,6 +708,7 @@ std::string _PluginExecuteAPI(std::string execplugin,std::string script,int addr
 int fal_cache,cd_cache;
 std::string fal_buffer;
 int _FindAllLine(int startline, int skipline, std::string file, std::string charData) {
+	//_p("FAL Debug:   File:  <" + file + ">   Data:  <" + charData + ">");
 	cd_cache = charData.size();
 	fal_cache = FindCharLineA(startline, skipline, file, charData);
 	if (fal_cache == -4) return -4;
@@ -725,6 +726,7 @@ int _FindAllLine(int startline, int skipline, std::string file, std::string char
 		break;
 	}
 
+	//_p("FAL Debug:   return value :  <" + std::to_string(fal_cache)+">");
 	return fal_cache;
 }
 

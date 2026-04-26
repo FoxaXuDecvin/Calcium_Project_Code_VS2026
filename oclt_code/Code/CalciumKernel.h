@@ -317,7 +317,9 @@ int _Thread_CreateScript(std::string File,std::string argument_s) {
 	return thread_debug_status;
 }
 
+bool __DisableGFL_Reset = false;
 void _gfL_reset(void) {
+	if (__DisableGFL_Reset == true) return;
 	_gf_cg = 0;
 	_gf_cgmax = 1;
 	_gf_line = 1;
@@ -371,12 +373,14 @@ std::string lost_memory;
 int ModifyCount;
 int procesid_ccode;
 char CK_ConvertTemp[1024];
-std::string _RunSuperMaker,_WorkDIRECTORY_FOLDER;
+std::string _RunSuperMaker,_WorkDIRECTORY_FOLDER,RUNPID;
 std::string Net_script_nameid;
 int __CreateNewThreads(std::string Script,std::string args,std::string originEnv,std::string proces_runid) {
 	std::string CurrentRSM = _RunSuperMaker;
+	std::string CurrentWKF = _WorkDIRECTORY_FOLDER;
 	procesid_ccode = _system_autoRun_A(CurrentRSM, "-run \"" + Script + "\" -args \"" + args + "\" -loadenv \"" + originEnv + "\" -runid \"" + proces_runid + "\" -fastmode -noeditconfig",true);
 	_fileapi_del (CurrentRSM);
+	_dapi_rmdir (CurrentWKF);
 	return procesid_ccode;
 }
 
@@ -389,6 +393,7 @@ std::string _runcode_api(std::string command) {
 		command = HeadSpaceCleanA(command);
 	}
 	std::string oldcmd = command;
+	std::string mergedcmd = oldcmd;
 	command = _Old_VSAPI_TransVar(command);
 	if (oldcmd == command) {
 		_var_auto_void = false;
@@ -580,6 +585,14 @@ std::string _runcode_api(std::string command) {
 		_stop_exec_script = true;
 		return charCutA;
 	}
+
+
+	if (oldcmd == command) {
+	}
+	else {
+		mergedcmd = command;
+	}
+
 
 	//CONFIG
 	if (SizeRead(command, 8) == "_envsave") {
@@ -1048,9 +1061,11 @@ std::string _runcode_api(std::string command) {
 		_fileapi_write(_pagefile_savedir, VarSpace);
 
 		//Add New Threads
-		_RunSuperMaker = _$GetSelfPath + "/" + "Thread_LiveNameFolder/CLT_" + chartempC + "_.exe"; // Copy Calcium Core file to LiveName Folder
-		_WorkDIRECTORY_FOLDER = _$GetSelfPath + "/" + "Thread_LiveNameFolder";
+		RUNPID = _get_random_s(1, 99999999);
+		_RunSuperMaker = _$GetSelfPath + "/" + "Thread_LiveNameFolder/" + RUNPID + "/CLT_" + chartempC + "_.exe"; // Copy Calcium Core file to LiveName Folder
+		_WorkDIRECTORY_FOLDER = _$GetSelfPath + "/" + "Thread_LiveNameFolder/" + RUNPID;
 		_dapi_mkdir(_$GetSelfPath + "/" + "Thread_LiveNameFolder");
+		_dapi_mkdir(_WorkDIRECTORY_FOLDER);
 		while (1) {
 			_fileapi_del(_WorkDIRECTORY_FOLDER + "/calcium_settings.cfg");
 			if (!check_file_existence(_WorkDIRECTORY_FOLDER + "/calcium_settings.cfg"))break;
@@ -1059,9 +1074,15 @@ std::string _runcode_api(std::string command) {
 		_fileapi_CpFile(_$GetSelfPath + "/calcium_settings.cfg", _WorkDIRECTORY_FOLDER + "/calcium_settings.cfg");
 		_write_sipcfg(_WorkDIRECTORY_FOLDER + "/calcium_settings.cfg", "ExecuteFile", "voidcheck");
 
-		if (check_file_existence(_RunSuperMaker)) {
+		if (_load_sipcfg(Reg_Process_Map, chartempC) == "alive") {
 			_p("[CalciumThreadManager] A Exist same name std::thread is running");
 			_p("[CalciumThreadManager] Failed to Create Threads");
+			return "fail";
+		}
+
+		if (check_file_existence(_RunSuperMaker)) {
+			_p("[CalciumThreadManager] A Exist same name std::thread is running");
+			_p("[CalciumThreadManager] Legacy method. Failed to Create Threads");
 			return "fail";
 		}
 
@@ -1200,6 +1221,94 @@ std::string _runcode_api(std::string command) {
 		}
 		return CharCutC;
 	}
+
+	if (SizeRead(command, 8) == "_loadlib") {
+
+		charCutB = _runcode_api(_Old_VSAPI_TransVar(PartReadA(mergedcmd, "<", ">", 1))); //Script File
+		chartempA = _Old_VSAPI_TransVar(PartReadA(mergedcmd, ">", "$FROMEND$", 1));  //USE LIB ID
+		chartempA = ReplaceCharA(chartempA, "\"", "");
+		chartempA = HeadSpaceClean(chartempA);
+
+		if (!check_file_existenceA(charCutB)) {
+			charCutB = _rcbind_pluginscript + "/" + charCutB;
+			if (!check_file_existenceA(charCutB)) {
+				_p("No this Library file.");
+				_p(charCutB);
+				return "filenotfound";
+			}
+		}
+
+		//Backup old GFapi data;
+
+		int _old$_gf_cg = _gf_cg;
+		int _old$_gf_cgmax = _gf_cgmax;
+		int _old$_gf_line = _gf_line;
+		bool _old$_direct_read_script = _direct_read_script;
+		std::string _old$_args = script_args;
+		bool _old$_CK_ShellMode = _CK_ShellMode;
+		std::string _old$_global_scriptload = _global_scriptload;
+
+		//Create New Space
+
+		_gf_cg = 0;
+		_gf_cgmax = 1;
+		_gf_line = 1;
+		_gf_charget = "";
+		_direct_read_script = false;
+		_CK_ShellMode = false;
+
+		//fetch address
+		intCutA = _FindAllLine(1, 0, charCutB, chartempA);
+		if (_direct_read_script == true) {
+			_gf_line++;
+		}
+		if (intCutA == -4) {
+			_p("Load Library Error");
+			_p("No Input Point:   <" + charCutB + "> ---> <" + chartempA + ">");
+			return "false";
+		}
+
+		if (_debug_type_detected == true) {
+			_p("Find char mark in " + std::to_string(intCutA));
+		}
+
+		intCutA++;
+
+		_gf_cg = 0;
+		_gf_cgmax = 1;
+		_gf_line = intCutA;
+		_gf_charget = "";
+
+		//Run
+
+		//_p("loadlib Debug:  GFLine :  " + std::to_string(_gf_line));
+		__DisableGFL_Reset = true;
+		CharCutC = _ckapi_scriptload(charCutB,"ModernLibrary");
+		__DisableGFL_Reset = false;
+
+		if (_stop_exec_script == true) {
+			_stop_exec_script = false;
+		}
+
+		//Recovery old GFapi Data;
+		_gf_cg = _old$_gf_cg;
+		_gf_cgmax = _old$_gf_cgmax;
+		_gf_line = _old$_gf_line;
+		_gf_charget = "";
+		script_args = _old$_args;
+		_direct_read_script = _old$_direct_read_script;
+		_CK_ShellMode = _old$_CK_ShellMode;
+		_global_scriptload = _old$_global_scriptload;
+
+		if (CharCutC == "runid.exit") {
+			return CharCutC;
+		}
+		if (CharCutC == "runid.entershell") {
+			return CharCutC;
+		}
+		return CharCutC;
+	}
+
 	if (SizeRead(command, 3) == "_if") {
 		_if_reverse = false;
 		//_p("LaoDeng");
@@ -2428,6 +2537,7 @@ std::string _runcode_api(std::string command) {
 	if (_var_auto_void == true) {
 		return command;
 	}
+
 	_pv("_$lang.nullcmd   :  <" + _global_scriptload + ">  Line " + std::to_string(_gf_line) + "  INFO --> " + command + "    (Resource -->  " + oldcmd + ")");
 	if (is_TPC_already_Running == true) {
 		_fileapi_write(Error_TrackFile, "Calcium Error, execute. On  Full Line Read.  File :  " + _global_scriptload + " Line :  " + std::to_string(_gf_line) + "  Command --> " + command + "    (Resource -->  " + oldcmd + ")");
