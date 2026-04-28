@@ -47,7 +47,7 @@ std::string _KV_softwareVersion = "121"; //(Software Version)
 
 std::string _KV_gen = "1";//(General)
 
-std::string _KV_rv = "6";//(Release Version)
+std::string _KV_rv = "7";//(Release Version)
 
 std::string _KV_releaseVer = _KV_rV_Release;//(Debug/Preview/preRelease/demo/Release  1 - 4)
 
@@ -214,8 +214,8 @@ bool _RcApiLoadConfig() {
 		_soildwrite_write("$AllowShellEdit=true;");
 		_soildwrite_write("$AllowScriptEdit=false;");
 		_soildwrite_write("$UseDirectRead=false;");
-		_soildwrite_write("$TrustedServerCheck=true;");
-		_soildwrite_write("$OffLangCheck=false;");
+		_soildwrite_write("$TrustedServerCheck=false;");
+		_soildwrite_write("$OffLangCheck=true;");
 		_soildwrite_write("$MaxScriptExecuteLine=2147483640;");
 		_soildwrite_write("$AfterExecuteSleepTime=0;");
 		_soildwrite_write("$VarSpaceRandomError=0;");
