@@ -21,6 +21,9 @@ std::string _load_sipcfg(std::string _sc_File, std::string _sc_ID) {
 				continue;
 			}
 			if (tempptr == "ReadFailed") {
+				if (readptr != 1) {
+					continue;
+				}
 				cout << "Failed to Load Simple Config" << endl;
 				cout << "Open File Failed :  " << _sc_File << endl;
 				break;
@@ -59,6 +62,9 @@ std::string _load_sipcfg_noreturn(std::string _sc_File, std::string _sc_ID) {
 				continue;
 			}
 			if (tempptr == "ReadFailed") {
+				if (readptr_glo != 1) {
+					continue;
+				}
 				cout << "Failed to Load Simple Config" << endl;
 				cout << "Open File Failed :  " << _sc_File << endl;
 				break;
@@ -123,6 +129,7 @@ bool _spcfg_wiriteapi(std::string _sc_File, int _sc_Line, std::string _sc_header
 		if (tempreadbuffEr_ == "overline") {
 			break;
 		}
+
 		if (tempreadbuffEr_ == "ReadFailed") {
 			_p("fileapi.read error.  address " + _sc_File + ".  level " + std::to_string(n_readptr_) + "   Retry !");
 			goto ReTryReader;
@@ -170,10 +177,14 @@ bool _write_sipcfg(std::string _sc_File, std::string _sc_ID, std::string _sc_wri
 				continue;
 			}
 			if (tempptr == "ReadFailed") {
+				if (readptr == 1) {
+					continue;
+				}
 				cout << "Failed to Write Simple Config" << endl;
 				cout << "Open File Failed :  " << _sc_File << endl;
 				break;
 			}
+
 			if (tempptr == "overline") {
 				//WriteNewConfig
 				return _spcfg_wiriteapi(_sc_File, readptr, _sc_ID, _sc_writeINFO);
