@@ -117,9 +117,18 @@ bool _spcfg_wiriteapi(std::string _sc_File, int _sc_Line, std::string _sc_header
 			continue;
 		}
 
+		ReTryReader:
 		tempreadbuffEr_ = _fileapi_textread(_sc_File, n_readptr_);
 
 		if (tempreadbuffEr_ == "overline") {
+			break;
+		}
+		if (tempreadbuffEr_ == "ReadFailed") {
+			_p("fileapi.read error.  address " + _sc_File + ".  level " + std::to_string(n_readptr_) + "   Retry !");
+			goto ReTryReader;
+		}
+
+		if (tempreadbuffEr_ == "LineError") {
 			break;
 		}
 
