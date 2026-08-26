@@ -297,6 +297,9 @@ std::string _ckapi_scriptload(std::string load_Script,std::string Sargs) {
 		if (_api_result == "runid.coverscript") {
 			return "runid.coverscript";
 		}
+		if (_api_result == "runid.fileunlocked") {
+			_SessionLock.close();
+		}
 
 
 		if (_stop_exec_script == true) {
@@ -1281,10 +1284,27 @@ std::string _runcode_api(std::string command) {
 
 		//Run
 
+		$coverscript = "";
+		$coverscript_args = "";
+
 		//_p("loadlib Debug:  GFLine :  " + std::to_string(_gf_line));
+	COVERRUNTAGS_LLB:
 		__DisableGFL_Reset = true;
-		CharCutC = _ckapi_scriptload(charCutB,"ModernLibrary");
+		CharCutC = _ckapi_scriptload(charCutB, chartempA);
 		__DisableGFL_Reset = false;
+		if (CharCutC == "runid.coverscript") {
+			charCutB = $coverscript;
+			chartempA = $coverscript_args;
+			
+			_gf_cg = 0;
+			_gf_cgmax = 1;
+			_gf_line = 1;
+			_gf_charget = "";
+			_direct_read_script = false;
+			_CK_ShellMode = false;
+
+			goto COVERRUNTAGS_LLB;
+		}
 
 		if (_stop_exec_script == true) {
 			_stop_exec_script = false;
@@ -1979,6 +1999,9 @@ std::string _runcode_api(std::string command) {
 	if (SizeRead(command, 12) == "_$directmode") {
 		_direct_read_script = true;
 		return "ok";
+	}
+	if (SizeRead(command, 15) == "_$file_unlocked") {
+			return "runid.fileunlocked";
 	}
 	if (SizeRead(command, 7) == "_$nolog") {
 		return "ok";
