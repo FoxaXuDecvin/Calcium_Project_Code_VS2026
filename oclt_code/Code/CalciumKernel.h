@@ -527,6 +527,14 @@ std::string _runcode_api(std::string command) {
 		if (_VarSpaceMFTracker == true) {
 			_fileapi_write("VarSpace_ModifyTracker.txt", "VarSpace Modify .    @Env :   \"" + _rc_varbind + "\"    @New Value :  \"" + _rc_varinfo + "\"    @Old Value :   \"" + _Old_VSAPI_TransVar(_rc_varbind) + "\"");
 		}
+		
+		if (_getvarspace(_rc_varbind) != _rc_varbind) {
+			if (checkChar(_rc_varbind, "*")) {
+				_p("Illegal Access Memory :  " + _rc_varbind + ".  Process :  " + _global_scriptload + "  Access Memory is illegal.");
+				return "false";
+			}
+		}
+
 		_varspaceadd(_rc_varbind, _rc_varinfo);
 		
 
