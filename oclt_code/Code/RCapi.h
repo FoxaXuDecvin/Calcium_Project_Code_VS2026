@@ -11,6 +11,14 @@
 int CL_FMV_ID = 3067; // Calcium Lang Format Version
 //_$req_cl_fmv <Version>
 
+int dfb_test = 1;
+void _DEBUG_ForBreakpoint() {
+	dfb_test++;
+	dfb_test++;
+	dfb_test++;
+	return;
+}
+
 /// <VERSION>
 //releaseVerKnd
 const std::string _KV_rV_Debug = "1";

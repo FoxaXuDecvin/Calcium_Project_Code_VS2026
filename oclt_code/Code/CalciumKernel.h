@@ -438,6 +438,10 @@ std::string _runcode_api(std::string command) {
 		}
 		return"empty";
 	}
+	if (command == "_breakpoint") {
+		_DEBUG_ForBreakpoint();
+		return "true";
+	}
 	if (command == "1") {
 		return "true";
 	}
