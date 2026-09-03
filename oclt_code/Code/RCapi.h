@@ -6,10 +6,9 @@
 
 #include"../shload.h"
 #include"../Code/ThirdPartyCode.h"
-#include<thread>
 
 
-int CL_FMV_ID = 3055; // Calcium Lang Format Version
+int CL_FMV_ID = 3067; // Calcium Lang Format Version
 //_$req_cl_fmv <Version>
 
 /// <VERSION>
@@ -45,7 +44,7 @@ std::string _CK_Runid = _get_random_s(100000, 999999);
 
 std::string _KV_softwareVersion = "121"; //(Software Version)
 
-std::string _KV_gen = "2";//(General)
+std::string _KV_gen = "3";//(General)
 
 std::string _KV_rv = "1";//(Release Version)
 
@@ -973,4 +972,86 @@ void HelpArgsType() {
 	_p("     -perfid {ID}                             TPC Service. Track Performance Active");
 	_p("");
 	return;
+}
+
+//NETWORKAPI
+bool NAT_Result, NAT_isTimeouted, NAT_Status;
+int NAT_TimeClock;
+int NetworkAgent_Thread(std::string URL, std::string SavePath) {
+	NAT_Result = _urldown_api_nocache(URL, SavePath);
+	NAT_Status = true;
+	if (NAT_Result == true) {
+		if (NAT_isTimeouted == true) {
+			_fileapi_del(SavePath);
+			return 2;
+		}
+		return 0;
+	}
+	else {
+		return 3;
+	}
+}
+
+std::string NewWebDownloadSocket(std::string URL, std::string SavePath) {
+	//Add Process
+	NAT_Result = NAT_isTimeouted = NAT_Status = false;
+
+	std::thread networkio_download(NetworkAgent_Thread, URL, SavePath);
+	networkio_download.detach();
+
+	NAT_TimeClock = Network_AgentWaitTime;
+	while (true) {
+		if (NAT_Status == true) break;
+		sleepapi(1);
+		NAT_TimeClock--;
+		if (NAT_TimeClock <= 0) break;
+	}
+
+	if (NAT_Status == false) {
+		NAT_isTimeouted = true;
+		sleepapi_ms(200);
+		_fileapi_del(SavePath);
+		return "CA_CONNECT.TIMEOUTED";
+	}
+	if (NAT_Result == true) {
+		return "true";
+	}
+
+	if (NAT_Result == false) {
+		return "CA_CONNECT.FAILED";
+	}
+
+	return "CA_CONNECT.INVAILD_CODE";
+}
+
+bool A_NewWebDownloadSocket(std::string URL, std::string SavePath) {
+	//Add Process
+	NAT_Result = NAT_isTimeouted = NAT_Status = false;
+
+	std::thread networkio_download_A(NetworkAgent_Thread, URL, SavePath);
+	networkio_download_A.detach();
+
+	NAT_TimeClock = Network_AgentWaitTime;
+	while (true) {
+		if (NAT_Status == true) break;
+		sleepapi(1);
+		NAT_TimeClock--;
+		if (NAT_TimeClock <= 0) break;
+	}
+
+	if (NAT_Status == false) {
+		NAT_isTimeouted = true;
+		sleepapi_ms(200);
+		_fileapi_del(SavePath);
+		return false;
+	}
+	if (NAT_Result == true) {
+		return true;
+	}
+
+	if (NAT_Result == false) {
+		return false;
+	}
+
+	return false;
 }

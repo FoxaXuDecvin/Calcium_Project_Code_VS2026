@@ -224,6 +224,11 @@ std::string _api_result;
 bool _stop_exec_script = false;
 std::string _ckapi_scriptload(std::string load_Script,std::string Sargs) {
 	//_p("Load Main Kernel");
+	if (cc_script_privilege == -1) {
+		_p("script load failed. privilege is not inited");
+		_pause();
+		return "invaild_privilege";
+	}
 	std::ifstream _SessionLock;
 	if(_rcset_LockRunningScript)_SessionLock.open(load_Script);
 	//_p("Speed check point 1");
@@ -603,7 +608,16 @@ std::string _runcode_api(std::string command) {
 	else {
 		mergedcmd = command;
 	}
+	if (SizeRead(command, 8) == "_getprvg") {
+		return std::to_string(cc_script_privilege);
+	}
 
+
+	if (oldcmd == command) {
+	}
+	else {
+		mergedcmd = command;
+	}
 
 	//CONFIG
 	if (SizeRead(command, 8) == "_envsave") {
@@ -933,7 +947,7 @@ std::string _runcode_api(std::string command) {
 			_dapi_create_full_path(_rcbind_pluginscript + "/a.txt");
 		}
 
-		if (!_urldown_api_nocache(charCutB, Net_script_nameid)) {
+		if (!A_NewWebDownloadSocket(charCutB, Net_script_nameid)) {
 			std::cout << "[Error] Download URL Script failed .  please check your Internet and try again" << std::endl;
 			return "false";
 		};
@@ -2256,11 +2270,17 @@ std::string _runcode_api(std::string command) {
 		_var_typetext(charCutB);
 		return "ok";
 	}
+	if (SizeRead(command, 16) == "_url_set_timeout") {
+		charCutA = _Old_VSAPI_TransVar(PartReadA(oldcmd, " ", PartRead_FMend, 1));
+		Network_AgentWaitTime = atoi(charCutA.c_str());
+		_p("URL Request Time Out is :   " + std::to_string(Network_AgentWaitTime));
+		return "true";
+	}
 	if (SizeRead(command, 8) == "_url_get") {
 		_rc_varid = _runcode_api(_Old_VSAPI_TransVar(PartReadA(oldcmd, "(", ",", 1)));
 		_rc_varinfo = _runcode_api(_Old_VSAPI_TransVar(PartReadA(oldcmd, ",", ")", 1)));
 
-		if (!_urldown_api_nocache(_rc_varid, _rc_varinfo)) {
+		if (!A_NewWebDownloadSocket(_rc_varid, _rc_varinfo)) {
 			_p("_URL_GET failed access url :  " + _rc_varid);
 			return "false";
 		}
@@ -2298,7 +2318,7 @@ std::string _runcode_api(std::string command) {
 
 		CharCutD = _get_random_s(111111, 999999);
 
-		if (!_urldown_api_nocache(charCutB, CharCutD)) {
+		if (!A_NewWebDownloadSocket(charCutB, CharCutD)) {
 			_p("[GetHttp] Fail Get URL " + charCutB);
 			return "fail";
 		}

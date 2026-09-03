@@ -233,6 +233,12 @@ void argsApi(std::string args$api) {
 std::string _user_typebuffer;
 bool CK_Shell_open(void) {
 	_global_scriptload = "{ShellMode}";
+	cc_script_privilege = 0;
+	if (cc_script_privilege == -1) {
+		_p("OpenShell failed. privilege is not inited");
+		_pause();
+		return -1;
+	}
 	_CK_ShellMode = true;
 	_pn();
 	_pn();
@@ -634,6 +640,7 @@ int _ThreadManager_HeadMainLoad() {
 		return 0;
 	}
 	if (_runmode == _runmode_runscript) {
+		cc_script_privilege = 0;
 		ckapi_result = _ckapi_scriptload(runscript, script_args);
 		if (ckapi_result == "runid.crash.harddrv.error") {
 			return 25581;

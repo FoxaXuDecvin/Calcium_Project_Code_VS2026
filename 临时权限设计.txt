@@ -1,0 +1,22 @@
+Adds
+
+L1   add vars {1} -> L1{1}
+L2   add vars {2} -> L2{2}
+L3   ...
+L4   ...
+
+Fetch
+
+L1   fetch L1 -> Search L1{1} L2{1} return searchresult
+L2   fetch L2 -> Search L2{1}  return searchresult if request search L1{1} Access Denied
+
+Free
+
+L1   free L1 -> Free L1{1} L2{1} return succeed
+L2   free L2 -> Free L2{1}  return succeed if request free L1{1} Access Denied
+
+Execute 
+_script <{file}> {args} ({PrivilegeLevel}) {PrivilegeLevel} -> L1 L2 L3  if lost. use father script Level.
+
+if Father Script Level = 3  {PrivilegeLevel} only allowed >= 3
+if Father Script Level = 3  set {PrivilegeLevel} = 1 return invaild privilege status

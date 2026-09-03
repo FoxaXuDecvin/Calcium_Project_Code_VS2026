@@ -76,3 +76,5 @@ std::string Reg_Proces_runid = "NoNameProcess";
 std::string Reg_Process_Map;
 std::string $coverscript, $coverscript_args;
 std::string netwk_confirm;
+int cc_script_privilege = -1;
+int Network_AgentWaitTime = 20; //Seconds
