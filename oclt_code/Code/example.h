@@ -357,7 +357,6 @@ int _HeadMainLoad() {
 
 int ftLoadMainCodeCpp() {
 	//_p("Calcium Thread Manager :   Load MainThread");
-	_pause;
 	ReturnResultCode = _ThreadManager_HeadMainLoad();
 	_TaskLiveDetect = false;
 	//_p("Calcium Thread Manager :   task close program");
