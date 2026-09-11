@@ -237,7 +237,7 @@ bool CK_Shell_open(void) {
 	if (cc_script_privilege == -1) {
 		_p("OpenShell failed. privilege is not inited");
 		_pause();
-		return -1;
+		return false;
 	}
 	_CK_ShellMode = true;
 	_pn();
