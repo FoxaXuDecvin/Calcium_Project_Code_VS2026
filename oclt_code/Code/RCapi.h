@@ -8,7 +8,7 @@
 #include"../Code/ThirdPartyCode.h"
 
 
-int CL_FMV_ID = 3067; // Calcium Lang Format Version
+int CL_FMV_ID = 3075;// Calcium Lang Format Version
 //_$req_cl_fmv <Version>
 
 int dfb_test = 1;
@@ -54,7 +54,7 @@ std::string _KV_softwareVersion = "121"; //(Software Version)
 
 std::string _KV_gen = "3";//(General)
 
-std::string _KV_rv = "1";//(Release Version)
+std::string _KV_rv = "2";//(Release Version)
 
 std::string _KV_releaseVer = _KV_rV_Release;//(Debug/Preview/preRelease/demo/Release  1 - 4)
 
@@ -267,7 +267,7 @@ bool _RcApiLoadConfig() {
 			_p("File: " + file);
 			_p("Config file is not Integrity. or this config file not support your calcium version");
 			_p("Delete this config file. calcium will create a new config file");
-			_pause;
+			_pause();
 			return false;
 		}
 		_rcset_offlangcheck = true;

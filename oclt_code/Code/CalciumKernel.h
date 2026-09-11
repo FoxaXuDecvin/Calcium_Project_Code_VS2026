@@ -326,8 +326,13 @@ int _Thread_CreateScript(std::string File,std::string argument_s) {
 }
 
 bool __DisableGFL_Reset = false;
+bool __Temp_DisableGFL_Reset = false;
 void _gfL_reset(void) {
 	if (__DisableGFL_Reset == true) return;
+	if (__Temp_DisableGFL_Reset == true) {
+		__Temp_DisableGFL_Reset = false;
+		return;
+	}
 	_gf_cg = 0;
 	_gf_cgmax = 1;
 	_gf_line = 1;
@@ -1312,12 +1317,15 @@ std::string _runcode_api(std::string command) {
 
 		$coverscript = "";
 		$coverscript_args = "";
+		__Temp_DisableGFL_Reset = true;
+		CharCutC = _ckapi_scriptload(charCutB, chartempA);
+		goto CheckLLB_Status;
 
 		//_p("loadlib Debug:  GFLine :  " + std::to_string(_gf_line));
 	COVERRUNTAGS_LLB:
-		__DisableGFL_Reset = true;
 		CharCutC = _ckapi_scriptload(charCutB, chartempA);
-		__DisableGFL_Reset = false;
+
+		CheckLLB_Status:
 		if (CharCutC == "runid.coverscript") {
 			charCutB = $coverscript;
 			chartempA = $coverscript_args;
