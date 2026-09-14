@@ -8,7 +8,7 @@
 #include"../Code/ThirdPartyCode.h"
 
 
-int CL_FMV_ID = 3076;// Calcium Lang Format Version
+int CL_FMV_ID = 3081;// Calcium Lang Format Version
 //_$req_cl_fmv <Version>
 
 int dfb_test = 1;
@@ -54,7 +54,7 @@ std::string _KV_softwareVersion = "121"; //(Software Version)
 
 std::string _KV_gen = "3";//(General)
 
-std::string _KV_rv = "3";//(Release Version)
+std::string _KV_rv = "4";//(Release Version)
 
 std::string _KV_releaseVer = _KV_rV_Release;//(Debug/Preview/preRelease/demo/Release  1 - 4)
 
@@ -972,8 +972,9 @@ void HelpArgsType() {
 	_p("     -fastmode            Use Fast Mode to Load Calcium (No Language. No Resource Load) ");
 	_p(" ");
 	_p(" Developer Argument");
-	_p("     -enable-cmdtrack                 Enable Command Tracker and write to file");
-	_p("     -varspace-modifytrack         Enable track  all environment variable modify operate");
+	_p("     --enable-cmdtrack                 Enable Command Tracker and write to file");
+	_p("     --varspace-modifytrack         Enable track  all environment variable modify operate");
+	_p("     --stack-tracker                        Enable Script Stack Tracker");
 	_p("     -loadenv   {File}                      Load Saved Environment to Var Space");
 	_p("     -enable-vs-random-break   To Debug Error Recovery. Choose random var replace to '?'.emulate error happend.");
 	_p("     --perf-test                              Run Calcium Performance Test");

@@ -222,6 +222,7 @@ std::string _cmd_marks = "_";
 std::string cmdbuffer;
 std::string _api_result;
 bool _stop_exec_script = false;
+int _StackSize = 0;
 std::string _ckapi_scriptload(std::string load_Script,std::string Sargs) {
 	//_p("Load Main Kernel");
 	if (cc_script_privilege == -1) {
@@ -246,9 +247,13 @@ std::string _ckapi_scriptload(std::string load_Script,std::string Sargs) {
 
 	_gfL_reset();
 
-	while (true) {
+	if (_StackTracker)_write_sipcfg(_StackTrackerFile, load_Script, "Loaded");
+	_StackSize++;
+	if (_StackTracker)_write_sipcfg(_StackTrackerFile,"Stack_Size_Total", std::to_string(_StackSize));
+	while (true) {	
 		_global_scriptload = load_Script;
 		//_p("Speed check point 6");
+		if (_StackTracker)_write_sipcfg(_StackTrackerFile, load_Script, std::to_string(_gf_line));
 		if (_direct_read_script == false) {
 			if (is_TPC_already_Running == true) {
 				_fileapi_write(Address_TrackFile, "Method :  Full Line Read.  File :  " + _global_scriptload + " Line :  " + std::to_string(_gf_line) + "  breakpoint :  " + std::to_string(_gf_cg));
@@ -263,21 +268,46 @@ std::string _ckapi_scriptload(std::string load_Script,std::string Sargs) {
 		}
 		if (_gf_status == false) {
 			_pv("_$lang.stoprun.  Return status code :  " + cmdbuffer + "  . Args :  " + _global_scriptload + "   Line :  " + std::to_string(_gf_line) + " + " + std::to_string(_gf_cg));
+			if (_StackTracker) {
+				if (_StackTracker)_remove_sipcfg(_StackTrackerFile, load_Script);
+				_StackSize--;
+				if (_StackTracker)_write_sipcfg(_StackTrackerFile,"Stack_Size_Total", std::to_string(_StackSize));
+			}
 			return "The script terminated unexpectedly.";
 		}
 		
 
 		if (cmdbuffer == "badread") {
+			if (_StackTracker) {
+				if (_StackTracker)_remove_sipcfg(_StackTrackerFile, load_Script);
+				_StackSize--;
+				if (_StackTracker)_write_sipcfg(_StackTrackerFile,"Stack_Size_Total", std::to_string(_StackSize));
+			}
 			return "Error :   badread";
 		}
 		if (cmdbuffer == "badParameter") {
+			if (_StackTracker) {
+				if (_StackTracker)_remove_sipcfg(_StackTrackerFile, load_Script);
+				_StackSize--;
+				if (_StackTracker)_write_sipcfg(_StackTrackerFile,"Stack_Size_Total", std::to_string(_StackSize));
+			}
 			return "Error :   badParameter";
 		}
 		if (cmdbuffer == "badopen") {
+			if (_StackTracker) {
+				if (_StackTracker)_remove_sipcfg(_StackTrackerFile, load_Script);
+				_StackSize--;
+				if (_StackTracker)_write_sipcfg(_StackTrackerFile,"Stack_Size_Total", std::to_string(_StackSize));
+			}
 			return "Error :   badopen";
 		}
 
 		if (cmdbuffer == "badfound") {
+			if (_StackTracker) {
+				if (_StackTracker)_remove_sipcfg(_StackTrackerFile, load_Script);
+				_StackSize--;
+				if (_StackTracker)_write_sipcfg(_StackTrackerFile,"Stack_Size_Total", std::to_string(_StackSize));
+			}
 			return "runid.crash.harddrv.error";
 		}
 
@@ -294,12 +324,27 @@ std::string _ckapi_scriptload(std::string load_Script,std::string Sargs) {
 		last_return = _api_result = _runcode_api(cmdbuffer);		
 		//_p("Speed check point 8");
 		if (_api_result == "runid.exit") {
+			if (_StackTracker) {
+				if (_StackTracker)_remove_sipcfg(_StackTrackerFile, load_Script);
+				_StackSize--;
+				if (_StackTracker)_write_sipcfg(_StackTrackerFile,"Stack_Size_Total", std::to_string(_StackSize));
+			}
 			return "runid.exit";
 		}
 		if (_api_result == "runid.entershell") {
+			if (_StackTracker) {
+				if (_StackTracker)_remove_sipcfg(_StackTrackerFile, load_Script);
+				_StackSize--;
+				if (_StackTracker)_write_sipcfg(_StackTrackerFile,"Stack_Size_Total", std::to_string(_StackSize));
+			}
 			return "runid.entershell";
 		}
 		if (_api_result == "runid.coverscript") {
+			if (_StackTracker) {
+				if (_StackTracker)_remove_sipcfg(_StackTrackerFile, load_Script);
+				_StackSize--;
+				if (_StackTracker)_write_sipcfg(_StackTrackerFile,"Stack_Size_Total", std::to_string(_StackSize));
+			}
 			return "runid.coverscript";
 		}
 		if (_api_result == "runid.fileunlocked") {
@@ -308,6 +353,11 @@ std::string _ckapi_scriptload(std::string load_Script,std::string Sargs) {
 
 
 		if (_stop_exec_script == true) {
+			if (_StackTracker) {
+				if (_StackTracker)_remove_sipcfg(_StackTrackerFile, load_Script);
+				_StackSize--;
+				if (_StackTracker)_write_sipcfg(_StackTrackerFile,"Stack_Size_Total", std::to_string(_StackSize));
+			}
 			return _api_result;
 		}
 
@@ -316,6 +366,11 @@ std::string _ckapi_scriptload(std::string load_Script,std::string Sargs) {
 		//NEXT
 	}
 
+	if (_StackTracker) {
+		if (_StackTracker)_remove_sipcfg(_StackTrackerFile, load_Script);
+		_StackSize--;
+		if (_StackTracker)_write_sipcfg(_StackTrackerFile,"Stack_Size_Total", std::to_string(_StackSize));
+	}
 	return _api_result;
 }
 

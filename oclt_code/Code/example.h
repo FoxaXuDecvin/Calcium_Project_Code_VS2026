@@ -126,14 +126,23 @@ void argsApi(std::string args$api) {
 		_skipcheck_language = true;
 	}
 
-	if (args$api == "-enable-cmdtrack") {
+	if (args$api == "--enable-cmdtrack") {
 		_CommandTracker = true;
 		_fileapi_createmark("CommandTracker.txt", "Tracker Report File");
 	}
 
-	if (args$api == "-varspace-modifytrack") {
+	if (args$api == "--varspace-modifytrack") {
 		_VarSpaceMFTracker = true;
 		_fileapi_createmark("VarSpace_ModifyTracker.txt", "Tracker Report File");
+	}
+
+	if (args$api == "--stack-tracker") {
+		_StackTracker = true;
+		_fileapi_del(_StackTrackerFile);
+		_fileapi_createmark(_StackTrackerFile, "PROCESS SCRIPT.STACK LIST");
+		_write_sipcfg(_StackTrackerFile, "Stack_Size_Total", "0");
+		_fileapi_write(_StackTrackerFile, " ");
+		return;
 	}
 
 	if (args$api == "-loadenv") {

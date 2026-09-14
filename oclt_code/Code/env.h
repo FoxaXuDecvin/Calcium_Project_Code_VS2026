@@ -71,6 +71,9 @@ bool _CommandTracker;
 
 bool _VarSpaceMFTracker;
 
+bool _StackTracker;
+std::string _StackTrackerFile = "$StackTracker.log";
+
 std::string Reg_Proces_runid = "NoNameProcess";
 
 std::string Reg_Process_Map;
