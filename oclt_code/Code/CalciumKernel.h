@@ -247,13 +247,14 @@ std::string _ckapi_scriptload(std::string load_Script,std::string Sargs) {
 
 	_gfL_reset();
 
-	if (_StackTracker)_write_sipcfg(_StackTrackerFile, load_Script, "Loaded");
 	_StackSize++;
+	std::string _StackPID = std::to_string(_StackSize) + "&Layer%" + load_Script;
+	if (_StackTracker)_write_sipcfg(_StackTrackerFile, _StackPID, "Loaded");
 	if (_StackTracker)_write_sipcfg(_StackTrackerFile,"Stack_Size_Total", std::to_string(_StackSize));
 	while (true) {	
 		_global_scriptload = load_Script;
 		//_p("Speed check point 6");
-		if (_StackTracker)_write_sipcfg(_StackTrackerFile, load_Script, std::to_string(_gf_line));
+		if (_StackTracker)_write_sipcfg(_StackTrackerFile, _StackPID, std::to_string(_gf_line));
 		if (_direct_read_script == false) {
 			if (is_TPC_already_Running == true) {
 				_fileapi_write(Address_TrackFile, "Method :  Full Line Read.  File :  " + _global_scriptload + " Line :  " + std::to_string(_gf_line) + "  breakpoint :  " + std::to_string(_gf_cg));
@@ -269,7 +270,7 @@ std::string _ckapi_scriptload(std::string load_Script,std::string Sargs) {
 		if (_gf_status == false) {
 			_pv("_$lang.stoprun.  Return status code :  " + cmdbuffer + "  . Args :  " + _global_scriptload + "   Line :  " + std::to_string(_gf_line) + " + " + std::to_string(_gf_cg));
 			if (_StackTracker) {
-				if (_StackTracker)_remove_sipcfg(_StackTrackerFile, load_Script);
+				if (_StackTracker)_remove_sipcfg(_StackTrackerFile, _StackPID);
 				_StackSize--;
 				if (_StackTracker)_write_sipcfg(_StackTrackerFile,"Stack_Size_Total", std::to_string(_StackSize));
 			}
@@ -279,7 +280,7 @@ std::string _ckapi_scriptload(std::string load_Script,std::string Sargs) {
 
 		if (cmdbuffer == "badread") {
 			if (_StackTracker) {
-				if (_StackTracker)_remove_sipcfg(_StackTrackerFile, load_Script);
+				if (_StackTracker)_remove_sipcfg(_StackTrackerFile, _StackPID);
 				_StackSize--;
 				if (_StackTracker)_write_sipcfg(_StackTrackerFile,"Stack_Size_Total", std::to_string(_StackSize));
 			}
@@ -287,7 +288,7 @@ std::string _ckapi_scriptload(std::string load_Script,std::string Sargs) {
 		}
 		if (cmdbuffer == "badParameter") {
 			if (_StackTracker) {
-				if (_StackTracker)_remove_sipcfg(_StackTrackerFile, load_Script);
+				if (_StackTracker)_remove_sipcfg(_StackTrackerFile, _StackPID);
 				_StackSize--;
 				if (_StackTracker)_write_sipcfg(_StackTrackerFile,"Stack_Size_Total", std::to_string(_StackSize));
 			}
@@ -295,7 +296,7 @@ std::string _ckapi_scriptload(std::string load_Script,std::string Sargs) {
 		}
 		if (cmdbuffer == "badopen") {
 			if (_StackTracker) {
-				if (_StackTracker)_remove_sipcfg(_StackTrackerFile, load_Script);
+				if (_StackTracker)_remove_sipcfg(_StackTrackerFile, _StackPID);
 				_StackSize--;
 				if (_StackTracker)_write_sipcfg(_StackTrackerFile,"Stack_Size_Total", std::to_string(_StackSize));
 			}
@@ -304,7 +305,7 @@ std::string _ckapi_scriptload(std::string load_Script,std::string Sargs) {
 
 		if (cmdbuffer == "badfound") {
 			if (_StackTracker) {
-				if (_StackTracker)_remove_sipcfg(_StackTrackerFile, load_Script);
+				if (_StackTracker)_remove_sipcfg(_StackTrackerFile, _StackPID);
 				_StackSize--;
 				if (_StackTracker)_write_sipcfg(_StackTrackerFile,"Stack_Size_Total", std::to_string(_StackSize));
 			}
@@ -325,7 +326,7 @@ std::string _ckapi_scriptload(std::string load_Script,std::string Sargs) {
 		//_p("Speed check point 8");
 		if (_api_result == "runid.exit") {
 			if (_StackTracker) {
-				if (_StackTracker)_remove_sipcfg(_StackTrackerFile, load_Script);
+				if (_StackTracker)_remove_sipcfg(_StackTrackerFile, _StackPID);
 				_StackSize--;
 				if (_StackTracker)_write_sipcfg(_StackTrackerFile,"Stack_Size_Total", std::to_string(_StackSize));
 			}
@@ -333,7 +334,7 @@ std::string _ckapi_scriptload(std::string load_Script,std::string Sargs) {
 		}
 		if (_api_result == "runid.entershell") {
 			if (_StackTracker) {
-				if (_StackTracker)_remove_sipcfg(_StackTrackerFile, load_Script);
+				if (_StackTracker)_remove_sipcfg(_StackTrackerFile, _StackPID);
 				_StackSize--;
 				if (_StackTracker)_write_sipcfg(_StackTrackerFile,"Stack_Size_Total", std::to_string(_StackSize));
 			}
@@ -341,7 +342,7 @@ std::string _ckapi_scriptload(std::string load_Script,std::string Sargs) {
 		}
 		if (_api_result == "runid.coverscript") {
 			if (_StackTracker) {
-				if (_StackTracker)_remove_sipcfg(_StackTrackerFile, load_Script);
+				if (_StackTracker)_remove_sipcfg(_StackTrackerFile, _StackPID);
 				_StackSize--;
 				if (_StackTracker)_write_sipcfg(_StackTrackerFile,"Stack_Size_Total", std::to_string(_StackSize));
 			}
@@ -354,7 +355,7 @@ std::string _ckapi_scriptload(std::string load_Script,std::string Sargs) {
 
 		if (_stop_exec_script == true) {
 			if (_StackTracker) {
-				if (_StackTracker)_remove_sipcfg(_StackTrackerFile, load_Script);
+				if (_StackTracker)_remove_sipcfg(_StackTrackerFile, _StackPID);
 				_StackSize--;
 				if (_StackTracker)_write_sipcfg(_StackTrackerFile,"Stack_Size_Total", std::to_string(_StackSize));
 			}
@@ -367,7 +368,7 @@ std::string _ckapi_scriptload(std::string load_Script,std::string Sargs) {
 	}
 
 	if (_StackTracker) {
-		if (_StackTracker)_remove_sipcfg(_StackTrackerFile, load_Script);
+		if (_StackTracker)_remove_sipcfg(_StackTrackerFile, _StackPID);
 		_StackSize--;
 		if (_StackTracker)_write_sipcfg(_StackTrackerFile,"Stack_Size_Total", std::to_string(_StackSize));
 	}
