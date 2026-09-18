@@ -2220,7 +2220,12 @@ std::string _runcode_api(std::string command) {
 	if (SizeRead(command, 10) == "_file_list") {
 		_rc_varid = _runcode_api(_Old_VSAPI_TransVar(PartReadA(oldcmd, "(", ",", 1)));
 		_rc_varinfo = _runcode_api(_Old_VSAPI_TransVar(PartReadA(oldcmd, ",", ")", 1)));
+		if (check_file_existence(_rc_varid)) _fileapi_del(_rc_varid);
 		CreateDirMap_txt(_rc_varid, _rc_varinfo);
+		BatchFileReplace_(_rc_varid,_$GetSelfPath, "");
+		BatchFileReplace_(_rc_varid,ReplaceChar(_$GetSelfPath,"\\","/"), "");
+		BatchFileReplace_(_rc_varid, _rc_varinfo, "");
+
 		//std::cout << "Save File :    " << _rc_varid << std::endl;
 		//std::cout << "DIRECTORY :   " << _rc_varinfo << std::endl;
 		return "true";
@@ -2234,6 +2239,12 @@ std::string _runcode_api(std::string command) {
 	}
 
 	//FileSystemIO
+	if (SizeRead(command, 11) == "_path_fixed") {
+		TempPrc_Rcapi = _$GetSelfPath;
+		TempPrc_Rcapi = ReplaceChar(TempPrc_Rcapi, "\\", "/");
+		_varspaceadd("{path}", TempPrc_Rcapi);
+		return "done";
+	}
 	if (SizeRead(command, 10) == "_file_copy") {
 		_rc_varid = _runcode_api(_Old_VSAPI_TransVar(PartReadA(oldcmd, "(", ",", 1)));
 		_rc_varinfo = _runcode_api(_Old_VSAPI_TransVar(PartReadA(oldcmd, ",", ")", 1)));

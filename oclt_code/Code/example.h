@@ -30,7 +30,7 @@ void TypeHelpMenu() {
 	_p("System :    " + _Run_SysKernel);
 	_p("----------------------------------------------------------");
 	_p("Kernel Version :    " + _KernelVersion + "  " + _KV_rV_Text);
-	_p("RCapi Version :     " + _RCapi_Version);
+	_p("CLFMV Version :     " + std::to_string(CL_FMV_ID));
 	_p("OpenCalcium Script Platform    .....");
 	_p("Github : https://github.com/FoxaXuDecvin/Calcium_Project_Code_VS2026");
 	_p("Language   " + _rcset_lang);

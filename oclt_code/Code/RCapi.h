@@ -8,7 +8,7 @@
 #include"../Code/ThirdPartyCode.h"
 
 
-int CL_FMV_ID = 3081;// Calcium Lang Format Version
+int CL_FMV_ID = 3084;// Calcium Lang Format Version
 //_$req_cl_fmv <Version>
 
 int dfb_test = 1;
@@ -54,7 +54,7 @@ std::string _KV_softwareVersion = "121"; //(Software Version)
 
 std::string _KV_gen = "3";//(General)
 
-std::string _KV_rv = "5";//(Release Version)
+std::string _KV_rv = "6";//(Release Version)
 
 std::string _KV_releaseVer = _KV_rV_Release;//(Debug/Preview/preRelease/demo/Release  1 - 4)
 
@@ -137,10 +137,13 @@ void _pv(std::string info) {
 
 
 std::string UserSetPATH = "nodata";
+std::string TempPrc_Rcapi;
 void _RcApi_vp_load(void) {
 	
 	if (UserSetPATH == "nodata") {
-		_varspaceadd("{path}", _$GetSelfPath);
+		TempPrc_Rcapi = _$GetSelfPath;
+		TempPrc_Rcapi = ReplaceChar(TempPrc_Rcapi, "\\", "/");
+		_varspaceadd("{path}", TempPrc_Rcapi);
 		//_p("PATH USE DEFAULT");
 	}
 	else {
