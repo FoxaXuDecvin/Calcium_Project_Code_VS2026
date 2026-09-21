@@ -54,7 +54,7 @@ std::string _KV_softwareVersion = "121"; //(Software Version)
 
 std::string _KV_gen = "3";//(General)
 
-std::string _KV_rv = "7";//(Release Version)
+std::string _KV_rv = "8";//(Release Version)
 
 std::string _KV_releaseVer = _KV_rV_Release;//(Debug/Preview/preRelease/demo/Release  1 - 4)
 
