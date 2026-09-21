@@ -6,7 +6,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 
-std::string $version_title = "OCLT _ 6 (Release)";
+std::string $version_title = "OCLT _ 6 (Dedicate Calcium Edition)";
 std::string $version_msg = "Release 3";
 
 std::string $codename = "Sunlight";

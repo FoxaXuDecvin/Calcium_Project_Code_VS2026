@@ -8,7 +8,7 @@
 #include"../Code/ThirdPartyCode.h"
 
 
-int CL_FMV_ID = 3084;// Calcium Lang Format Version
+int CL_FMV_ID = 3086;// Calcium Lang Format Version
 //_$req_cl_fmv <Version>
 
 int dfb_test = 1;
@@ -54,7 +54,7 @@ std::string _KV_softwareVersion = "121"; //(Software Version)
 
 std::string _KV_gen = "3";//(General)
 
-std::string _KV_rv = "6";//(Release Version)
+std::string _KV_rv = "7";//(Release Version)
 
 std::string _KV_releaseVer = _KV_rV_Release;//(Debug/Preview/preRelease/demo/Release  1 - 4)
 
@@ -144,11 +144,11 @@ void _RcApi_vp_load(void) {
 		TempPrc_Rcapi = _$GetSelfPath;
 		TempPrc_Rcapi = ReplaceChar(TempPrc_Rcapi, "\\", "/");
 		_varspaceadd("{path}", TempPrc_Rcapi);
-		//_p("PATH USE DEFAULT");
+		//_p("PATH USE DEFAULT :  " + TempPrc_Rcapi);
 	}
 	else {
 		_varspaceadd("{path}", UserSetPATH);
-		//_p("PATH USE USER SET");
+		//_p("PATH USE USER :  " + TempPrc_Rcapi);
 	}
 	//_pause();
 	_varspaceadd("{VersionID}", _KernelVersion);
@@ -244,7 +244,7 @@ bool _RcApiLoadConfig() {
 		_soildwrite_write("$DefaultPluginScript={path}/script;");
 		_soildwrite_write("$DefaultLanguagePath={path}/lang;");
 		_soildwrite_write("$PageFile={path}/envswap.tmp;");
-		_soildwrite_write("$OriginWorkDir=" + _$GetSelfPath + ";");
+		_soildwrite_write("$OriginWorkDir=" + TempPrc_Rcapi + ";");
 		_soildwrite_write("");
 		_soildwrite_write("//Display Settings");
 		_soildwrite_write("$Language=en-us;");

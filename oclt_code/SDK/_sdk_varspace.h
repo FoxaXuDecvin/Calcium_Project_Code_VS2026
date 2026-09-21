@@ -1,3 +1,4 @@
+
 // Var Space  - Based on CalciumProject/VarSpace.h
 
 #pragma once
