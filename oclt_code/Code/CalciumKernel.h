@@ -2214,9 +2214,21 @@ std::string _runcode_api(std::string command) {
 	if (SizeRead(command, 9) == "_dir_list") {
 		_rc_varid = _runcode_api(_Old_VSAPI_TransVar(PartReadA(oldcmd, "(", ",", 1)));
 		_rc_varinfo = _runcode_api(_Old_VSAPI_TransVar(PartReadA(oldcmd, ",", ")", 1)));
+		CreateFileMap_txt(_rc_varid, _rc_varinfo);
+
+		return "true";
+
+		//旧的列出所有文件指令，请转用 _file_list_all 以获得更好的兼容性
+		//此模块仅做兼容性保留
+	}
+
+	if (SizeRead(command, 14) == "_file_list_all") {
+		_rc_varid = _runcode_api(_Old_VSAPI_TransVar(PartReadA(oldcmd, "(", ",", 1)));
+		_rc_varinfo = _runcode_api(_Old_VSAPI_TransVar(PartReadA(oldcmd, ",", ")", 1)));
 		if (check_file_existence(_rc_varid)) _fileapi_del(_rc_varid);
 		CreateFileMap_txt(_rc_varid, _rc_varinfo);
 		BatchFileReplace_(_rc_varid, "//", "/");
+		BatchFileReplace_(_rc_varid, ReplaceChar(_rc_varinfo, "/", "\\") + "/", "");
 		BatchFileReplace_(_rc_varid, ReplaceChar(_rc_varinfo, "/", "\\"), "");
 		BatchFileReplace_(_rc_varid, _rc_varinfo, "");
 
@@ -2233,6 +2245,7 @@ std::string _runcode_api(std::string command) {
 		CreateDirMap_txt(_rc_varid, _rc_varinfo);
 		//PROCESS CUT WITH ORIGIN DATA SIZE
 		//BatchFileReplace_(_rc_varid, TempPrc_Rcapi, "");
+		BatchFileReplace_(_rc_varid, ReplaceChar(_rc_varinfo, "/", "\\") + "/", "");
 		BatchFileReplace_(_rc_varid, ReplaceChar(_rc_varinfo,"/","\\"), "");
 		BatchFileReplace_(_rc_varid, _rc_varinfo, "");
 		//std::cout << "Save File :    " << _rc_varid << std::endl;
