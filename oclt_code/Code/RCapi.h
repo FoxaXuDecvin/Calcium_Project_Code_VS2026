@@ -8,7 +8,7 @@
 #include"../Code/ThirdPartyCode.h"
 
 
-int CL_FMV_ID = 4011;// Calcium Lang Format Version
+int CL_FMV_ID = 4012;// Calcium Lang Format Version
 //_$req_cl_fmv <Version>
 
 int dfb_test = 1;
@@ -54,7 +54,7 @@ std::string _KV_softwareVersion = "121"; //(Software Version)
 
 std::string _KV_gen = "3";//(General)
 
-std::string _KV_rv = "12";//(Release Version)
+std::string _KV_rv = "13";//(Release Version)
 
 std::string _KV_releaseVer = _KV_rV_Stable;//(Debug/Preview/preRelease/demo/Release  1 - 4)
 
@@ -387,6 +387,8 @@ bool _cstp_makerN(std::string make_file_header,std::string file) {
 	CreateFileMap_txt("makedirmap.txt", make_file_header);
 	_cstp_file_write = file;
 	filiter_mfh = make_file_header;
+	filiter_mfh = ReplaceChar(filiter_mfh, "\\", "/");
+	filiter_mfh = ReplaceChar(filiter_mfh, "//", "/");
 	make_file_header = "makedirmap.txt";
 	_p("Execute Pack Directory " + _cstp_file_write);
 	if (check_file_existence(_cstp_file_write)) {
@@ -512,6 +514,8 @@ bool _Legacy_cstp_maker(std::string make_file_header, std::string file) {
 	CreateFileMap_txt("makedirmap.txt", make_file_header);
 	_cstp_file_write = file;
 	filiter_mfh = make_file_header;
+	filiter_mfh = ReplaceChar(filiter_mfh, "\\", "/");
+	filiter_mfh = ReplaceChar(filiter_mfh, "//", "/");
 	make_file_header = "makedirmap.txt";
 	if (CstpOutput)_p("Execute Pack Directory " + _cstp_file_write);
 	if (check_file_existence(_cstp_file_write)) {
