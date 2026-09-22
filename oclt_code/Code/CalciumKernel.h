@@ -2216,6 +2216,10 @@ std::string _runcode_api(std::string command) {
 		_rc_varinfo = _runcode_api(_Old_VSAPI_TransVar(PartReadA(oldcmd, ",", ")", 1)));
 		if (check_file_existence(_rc_varid)) _fileapi_del(_rc_varid);
 		CreateFileMap_txt(_rc_varid, _rc_varinfo);
+		BatchFileReplace_(_rc_varid, "//", "/");
+		BatchFileReplace_(_rc_varid, ReplaceChar(_rc_varinfo, "/", "\\"), "");
+		BatchFileReplace_(_rc_varid, _rc_varinfo, "");
+
 		return "true";
 	}
 	if (SizeRead(command, 10) == "_file_list") {
