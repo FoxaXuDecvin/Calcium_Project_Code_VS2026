@@ -2214,6 +2214,7 @@ std::string _runcode_api(std::string command) {
 	if (SizeRead(command, 9) == "_dir_list") {
 		_rc_varid = _runcode_api(_Old_VSAPI_TransVar(PartReadA(oldcmd, "(", ",", 1)));
 		_rc_varinfo = _runcode_api(_Old_VSAPI_TransVar(PartReadA(oldcmd, ",", ")", 1)));
+		if (check_file_existence(_rc_varid)) _fileapi_del(_rc_varid);
 		CreateFileMap_txt(_rc_varid, _rc_varinfo);
 		return "true";
 	}
