@@ -806,7 +806,7 @@ std::string _runcode_api(std::string command) {
 		charCutA = PartReadA(oldcmd, " ", PartRead_FMend, 1);
 		charCutB = _runcode_api(charCutA);
 
-
+		if (checkChar(charCutB, "%")) charCutB = ReplaceChar(charCutB, "%", "[illegalChar]");
 		_prts(charCutB);
 		return "ok.print:<" + charCutB + ">";
 	}
@@ -814,7 +814,7 @@ std::string _runcode_api(std::string command) {
 		charCutA = PartReadA(oldcmd, " ", PartRead_FMend, 1);
 		charCutB = _runcode_api(charCutA);
 
-		_p(charCutB);
+		_coutmsg(charCutB);
 		return "ok.print:<" + charCutB + ">";
 	}
 	if (SizeRead(command, 7) == "_system") {
@@ -1355,6 +1355,14 @@ std::string _runcode_api(std::string command) {
 		if (intCutA == -4) {
 			_p("Load Library Error");
 			_p("No Input Point:   <" + charCutB + "> ---> <" + chartempA + ">");
+			_gf_cg = _old$_gf_cg;
+			_gf_cgmax = _old$_gf_cgmax;
+			_gf_line = _old$_gf_line;
+			_gf_charget = "";
+			script_args = _old$_args;
+			_direct_read_script = _old$_direct_read_script;
+			_CK_ShellMode = _old$_CK_ShellMode;
+			_global_scriptload = _old$_global_scriptload;
 			return "false";
 		}
 
@@ -1401,6 +1409,7 @@ std::string _runcode_api(std::string command) {
 		}
 
 		//Recovery old GFapi Data;
+		RestoreAndEndloadData:
 		_gf_cg = _old$_gf_cg;
 		_gf_cgmax = _old$_gf_cgmax;
 		_gf_line = _old$_gf_line;
@@ -2059,9 +2068,13 @@ std::string _runcode_api(std::string command) {
 		return "ok";
 	}
 	if (SizeRead(command, 9) == "_fun_test") {
-		std::string CCFK =  NULL;
 
-		_prtoutmsg(CCFK);
+		//将teststring的字符串赋予一个NULL值
+		//抛出错误查看崩溃追踪器响应
+		
+		std::string teststring =  NULL;
+
+		_prtoutmsg(teststring);
 
 		return "ok";
 	}
