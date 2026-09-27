@@ -2579,6 +2579,7 @@ std::string _runcode_api(std::string command) {
 
 		_cstp_makerN(_rc_varid, _rc_varinfo);
 
+		_soildwrite_open("null");
 		return "Complete";
 	}
 	if (SizeRead(command, 12) == "_file_uncstp") {
